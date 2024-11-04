@@ -17,7 +17,7 @@ export default function Index() {
             <Text>Danh sách sinh viên:</Text>
             {sinh_vien.data.map((student, index) => (
                 <Text key={index}>
-                    {student[1]} - {student[100]} 
+                    {student[1]} - {student[6]} 
                 </Text>
             ))}
         </View>
