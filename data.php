@@ -1,9 +1,9 @@
 <?php
 // Kết nối đến cơ sở dữ liệu
-$servername = "localhost"; // Thay đổi theo cấu hình của bạn
-$username = "root"; // Thay đổi theo tên đăng nhập của bạn
-$password = ""; // Thay đổi theo mật khẩu của bạn
-$dbname = "quanlysinhvien"; // Thay đổi theo tên cơ sở dữ liệu của bạn
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "quanlysinhvien";
 
 // Tạo kết nối
 $conn = new mysqli($servername, $username, $password, $dbname);
