@@ -7,7 +7,7 @@ export default function _layout() {
 <Stack screenOptions={{headerShown:false }} initialRouteName="LoginScreen">
   <Stack.Screen name="LoginScreen" />
   <Stack.Screen name="(tabs)" />
-  <Stack.Screen name="RegisterScreen" />
+
 </Stack>
 
   )
