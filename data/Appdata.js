@@ -37,22 +37,40 @@ const database = {
             ]
         },
         mon_hoc: {
-            columns: ["ma_mon_hoc", "ten_mon_hoc", "so_tin_chi", "ma_khoa"],
-            data: [
-                [1, "Lập trình PHP", 3, "CNTT"],
-                [2, "Cơ sở dữ liệu", 3, "CNTT"],
-                [3, "Lập trình Java", 4, "CNTT"],
-                [4, "Mạng máy tính", 3, "CNTT"],
-                [5, "Phát triển ứng dụng di động", 3, "CNTT"],
-                [6, "Trí tuệ nhân tạo", 4, "CNTT"],
-                [7, "Phân tích dữ liệu", 3, "CNTT"],
-                [8, "Hóa hữu cơ", 3, "HT"],
-                [9, "Hóa phân tích", 3, "HT"],
-                [10, "Công nghệ thực phẩm", 2, "HT"],
-                [11, "Sinh học", 2, "HT"],
-                [12, "Quản lý chất lượng thực phẩm", 4, "HT"]
-            ]
-        },
+    columns: ["ma_mon_hoc", "ten_mon_hoc", "so_tin_chi", "ma_khoa"],
+    data: [
+        [1, "Lập trình PHP", 3, "CNTT"],
+        [2, "Cơ sở dữ liệu", 3, "CNTT"],
+        [3, "Lập trình Java", 4, "CNTT"],
+        [4, "Mạng máy tính", 3, "CNTT"],
+        [5, "Phát triển ứng dụng di động", 3, "CNTT"],
+        [6, "Trí tuệ nhân tạo", 4, "CNTT"],
+        [7, "Phân tích dữ liệu", 3, "CNTT"],
+        [8, "Hóa hữu cơ", 3, "HT"],
+        [9, "Hóa phân tích", 3, "HT"],
+        [10, "Công nghệ thực phẩm", 2, "HT"],
+        [11, "Sinh học", 2, "HT"],
+        [12, "Quản lý chất lượng thực phẩm", 4, "HT"],
+        [13, "Thiết kế web", 3, "CNTT"],
+        [14, "Lập trình Python", 3, "CNTT"],
+        [15, "Hệ điều hành", 4, "CNTT"],
+        [16, "Kỹ thuật phần mềm", 3, "CNTT"],
+        [17, "Lập trình C#", 3, "CNTT"],
+        [18, "An toàn thông tin", 4, "CNTT"],
+        [19, "Xử lý tín hiệu", 3, "CNTT"],
+        [20, "Khoa học máy tính", 4, "CNTT"],
+        [21, "Marketing trực tuyến", 3, "KT"],
+        [22, "Quản lý dự án", 3, "KT"],
+        [23, "Kinh tế vi mô", 3, "KT"],
+        [24, "Kinh tế vĩ mô", 3, "KT"],
+        [25, "Lý thuyết xác suất", 3, "KT"],
+        [26, "Thống kê ứng dụng", 3, "KT"],
+        [27, "Kế toán tài chính", 4, "KT"],
+        [28, "Quản trị nhân sự", 3, "KT"],
+        [29, "Quản lý sản xuất", 4, "KT"],
+        [30, "Nguyên lý kế toán", 4, "KT"]
+    ]
+},
         phong_hoc: {
             columns: ["ma_phong", "ten_phong", "Nha_so"],
             data: [
