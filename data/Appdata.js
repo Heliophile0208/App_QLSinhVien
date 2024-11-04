@@ -21,21 +21,23 @@ const database = {
                 ["DC", "Điện công nghiệp"]
             ]
         },
+        
         lop: {
             columns: ["ma_lop", "ten_lop", "ma_khoa", "khoa_hoc"],
             data: [
-                ["CT20CD31", "Công Nghệ Thông Tin", "", "K2020"],
-                ["MT20CD31", "Công Nghệ May", "", "K2020"],
-                ["KT21CD31", "Kinh Tế", "", "K2021"],
-                ["OT22CD31", "Công Nghệ Ô Tô", "", "K2022"],
-                ["MT23CD32", "Công Nghệ May", "", "K2023"],
-                ["HT21CD31", "Công Nghệ Hoá", "", "K2021"],
-                ["CT22CD31", "Công Nghệ Thông Tin", "", "K2022"],
-                ["CG22TC31", "Cắt Gọt", "", "K2022"],
-                ["QT22CD31", "Quản Trị Mạng", "", "K2022"],
-                ["HT20TC31", "Hoá Thực Phẩm", "", "K2020"]
+                ["CT20CD31", "Công Nghệ Thông Tin", "CNTT", "K2020"],
+                ["MT20CD31", "Công Nghệ May", "MTT", "K2020"],
+                ["KT21CD31", "Kinh Tế", "KT", "K2021"],
+                ["OT22CD31", "Công Nghệ Ô Tô", "CG", "K2022"],
+                ["MT23CD32", "Công Nghệ May", "MTT", "K2023"],
+                ["HT21CD31", "Công Nghệ Hoá", "HT", "K2021"],
+                ["CT22CD31", "Công Nghệ Thông Tin", "CNTT", "K2022"],
+                ["CG22TC31", "Cắt Gọt", "CG", "K2022"],
+                ["QT22CD31", "Quản Trị Mạng", "CNTT", "K2022"],
+                ["HT20TC31", "Hoá Thực Phẩm", "HT", "K2020"]
             ]
         },
+
         mon_hoc: {
     columns: ["ma_mon_hoc", "ten_mon_hoc", "so_tin_chi", "ma_khoa"],
     data: [
