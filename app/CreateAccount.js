@@ -43,7 +43,7 @@ export default function CreateAccount() {
         [
           {
             text: "Quên mật khẩu",
-            onPress: () => router.push('ForgotPasswordScreen'), 
+            onPress: () => router.push('ForgotPassword'), 
           },
           {
             text: "OK",
