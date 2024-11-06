@@ -1,6 +1,6 @@
 # App_QLSinhVien
 
-Ứng dụng **Quản Lý Sinh Viên** (App_QLSinhVien) là một công cụ đơn giản giúp quản lý thông tin sinh viên trong một hệ thống. Ứng dụng cho phép thêm, sửa, xóa và tìm kiếm thông tin sinh viên một cách dễ dàng và tiện lợi.
+Ứng dụng **Quản Lý Sinh Viên** (App_QLSinhVien) là một công cụ đơn giản giúp quản lý thông tin sinh viên trong một hệ thống. 
 
 ## Tính năng
 
