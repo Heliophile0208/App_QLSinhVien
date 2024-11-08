@@ -1,1 +1,2 @@
+expo install expo-notifications
 npm install @react-native-async-storage/async-storage
