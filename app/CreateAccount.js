@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Image } fro
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router';  // Import useRouter từ expo-router
 import database from '../data/Appdata'; // Import cơ sở dữ liệu của bạn
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 export default function CreateAccount() {
   const [username, setUsername] = useState("");
@@ -10,7 +11,7 @@ export default function CreateAccount() {
   const [maSinhVien, setMaSinhVien] = useState("");  // Thêm state cho ma_sinh_vien
   const router = useRouter(); // Khởi tạo useRouter
 
-  const handleCreateAccount = () => {
+  const handleCreateAccount = async () => {
 
     // Kiểm tra mã sinh viên không được để trống
     if (!maSinhVien) {
@@ -66,10 +67,22 @@ export default function CreateAccount() {
 
     // Tạo tài khoản mới
     const newId = database.quanlysinhvien.tai_khoan.data.length + 1;
-    database.quanlysinhvien.tai_khoan.data.push([newId, username, password, email, maSinhVien]);
+    const newAccount = [newId, username, password, email, maSinhVien];
 
-    console.log('Dữ liệu tài khoản sau khi thêm:', database.quanlysinhvien.tai_khoan.data); // Kiểm tra dữ liệu
+    // Thêm tài khoản mới vào cơ sở dữ liệu (mảng tai_khoan)
+    database.quanlysinhvien.tai_khoan.data.push(newAccount);
 
+    // Lưu tài khoản mới vào AsyncStorage
+    try {
+      await AsyncStorage.setItem("userAccount", JSON.stringify(newAccount)); // Lưu tài khoản vào AsyncStorage
+      console.log('Tài khoản đã lưu vào AsyncStorage:', newAccount); // Kiểm tra
+    } catch (error) {
+      console.log("Lỗi khi lưu tài khoản vào AsyncStorage:", error);
+    }
+
+    console.log('Dữ liệu tài khoản sau khi thêm vào cơ sở dữ liệu:', database.quanlysinhvien.tai_khoan.data); // Kiểm tra dữ liệu
+
+    // Thông báo thành công và chuyển hướng đến màn hình đăng nhập
     Alert.alert("Thông báo", "Tạo tài khoản thành công!");
     router.push('LoginScreen');
   };
