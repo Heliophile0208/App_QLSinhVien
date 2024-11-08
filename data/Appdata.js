@@ -117,6 +117,14 @@ const database = {
                 [2, "ngan", "2008", "test@example.com", "QT22CD3103"],
             ]
         },
+        notes: {
+        columns: ["id", "ma_sinh_vien", "title", "content", "created_at"],
+        data: [
+            
+            [1, "CT20CD3123", "Ghi chú về môn học", "Cần ôn tập phần thuật toán trước buổi kiểm tra.", "2024-11-08"],
+            [2, "QT22CD3103", "Dự án cuối kỳ", "Hoàn thành báo cáo và chuẩn bị bài thuyết trình.", "2024-11-09"]
+        ]
+        },      
         
         thoi_khoa_bieu: {
             columns: ["id", "ma_lop", "ma_mon_hoc", "ma_phong", "thu", "tuan", "gio_bat_dau", "gio_ket_thuc"],
