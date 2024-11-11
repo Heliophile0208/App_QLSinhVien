@@ -42,7 +42,7 @@
 
 #### Bước 4: Mở và chạy dự án sinh viên
 
-- Thêm vào file app.json:
+- Sửa vào file app.json:
    **"scheme": "your-app-scheme"**
 - Dán **app** và **data** vào folder dự án của bạn
   
