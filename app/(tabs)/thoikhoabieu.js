@@ -6,9 +6,9 @@ export default function Thoikhoabieu() {
   const thoiKhoaBieu = database.quanlysinhvien.thoi_khoa_bieu;
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedWeek, setSelectedWeek] = useState("");
-  const [selectedNamHoc, setSelectedNamHoc] = useState(""); // State for selected academic year
+  const [selectedNamHoc, setSelectedNamHoc] = useState(""); 
   const [filteredData, setFilteredData] = useState([]);
-  const [notes, setNotes] = useState(database.quanlysinhvien.notes.data); // Initial notes
+  const [notes, setNotes] = useState(database.quanlysinhvien.notes.data); 
   const [modalVisible, setModalVisible] = useState(false);
   const [currentNoteId, setCurrentNoteId] = useState(null);
   const [currentNoteTitle, setCurrentNoteTitle] = useState("");
@@ -21,7 +21,7 @@ export default function Thoikhoabieu() {
     const results = thoiKhoaBieu.data.filter(item => {
       const matchesClass = selectedClass ? item[1] === selectedClass : true;
       const matchesWeek = selectedWeek ? item[5].toString() === selectedWeek : true;
-      const matchesNamHoc = selectedNamHoc ? item[8] === selectedNamHoc : true; // Filter by nam_hoc
+      const matchesNamHoc = selectedNamHoc ? item[8] === selectedNamHoc : true; 
       return matchesClass && matchesWeek && matchesNamHoc;
     });
     setFilteredData(results);
