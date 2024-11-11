@@ -14,10 +14,9 @@ export default function Thoikhoabieu() {
   const [currentNoteTitle, setCurrentNoteTitle] = useState("");
   const [currentNoteContent, setCurrentNoteContent] = useState("");
 
-  // Extract unique academic years (nam_hoc) from the timetable data
-  const namHocOptions = [...new Set(thoiKhoaBieu.data.map(item => item[8]))]; // Assuming nam_hoc is at index 8 in thoi_khoa_bieu
-
-  // Handle searching for specific classes, weeks, and academic year
+  // Lấy năm học từ thời khoá biểu
+  const namHocOptions = [...new Set(thoiKhoaBieu.data.map(item => item[8]))]; 
+  // Lọc dữ liệu
   const handleSearch = () => {
     const results = thoiKhoaBieu.data.filter(item => {
       const matchesClass = selectedClass ? item[1] === selectedClass : true;
@@ -28,61 +27,61 @@ export default function Thoikhoabieu() {
     setFilteredData(results);
   };
 
-  // Handle adding or editing notes for a timetable entry
+ // Thêm ghi chú
   const handleAddOrEditNote = (id) => {
-    setCurrentNoteId(id); // Set the current timetable entry ID for the note
-    const existingNote = notes.find(note => note.ma_tkb === id); // Find existing note if any
+    setCurrentNoteId(id); 
+    const existingNote = notes.find(note => note.ma_tkb === id); 
 
     if (existingNote) {
-      setCurrentNoteTitle(existingNote.title); // Set title for editing
-      setCurrentNoteContent(existingNote.content); // Set content for editing
+      setCurrentNoteTitle(existingNote.title); 
+      setCurrentNoteContent(existingNote.content); 
     } else {
-      setCurrentNoteTitle(""); // Empty title for new notes
-      setCurrentNoteContent(""); // Empty content for new notes
+      setCurrentNoteTitle(""); 
+      setCurrentNoteContent(""); 
     }
 
-    setModalVisible(true); // Show the modal to add/edit note
+    setModalVisible(true); // Modal thêm/sửa note
   };
 
-  // Handle saving or updating the note
+  // Lưu ghi chú
   const handleSaveNote = () => {
     if (currentNoteId) {
       const newNote = {
-        ma_ghi_chu: Date.now().toString(), // Unique ID for the note (using Date.now())
-        ma_tkb: currentNoteId, // Link the note to the timetable entry ID
+        ma_ghi_chu: Date.now().toString(),
+        ma_tkb: currentNoteId, 
         title: currentNoteTitle,
         content: currentNoteContent,
         created_at: new Date().toISOString(),
       };
 
-      // Check if the note exists and update it or add new
+      
       const updatedNotes = notes.filter(note => note.ma_tkb !== currentNoteId); // Remove old note
-      updatedNotes.push(newNote); // Add the new/updated note
+      updatedNotes.push(newNote); 
       setNotes(updatedNotes);
-      database.quanlysinhvien.notes.data = updatedNotes; // Save to the database
+      database.quanlysinhvien.notes.data = updatedNotes; // Lưu vào database
 
-      console.log("Note saved:", newNote); // Log the saved note details
+      console.log("Note saved:", newNote); 
 
-      setModalVisible(false); // Close the modal
+      setModalVisible(false); 
     }
   };
 
-  // Handle deleting a note
+  // Xoá note
   const handleDeleteNote = (id) => {
-    // Remove the note with the matching ma_tkb (timetable ID)
+  
     const updatedNotes = notes.filter(note => note.ma_tkb !== id);
 
-    setNotes(updatedNotes); // Update the notes in state
-    database.quanlysinhvien.notes.data = updatedNotes; // Save the updated notes to the database
+    setNotes(updatedNotes); 
+    database.quanlysinhvien.notes.data = updatedNotes; 
 
-    console.log("Note deleted for timetable ID:", id); // Log the deletion
+    console.log("Note deleted for timetable ID:", id); 
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Thời Khóa Biểu</Text>
 
-      {/* Class and week search filters */}
+      {/* Lọc theo lớp và tuần */}
       <TextInput
         style={styles.input}
         placeholder="Nhập mã lớp"
@@ -97,12 +96,12 @@ export default function Thoikhoabieu() {
         keyboardType="numeric"
       />
 
-      {/* Dropdown for Nam Hoc (Academic Year) */}
+      {/* Modal cho Năm Học */}
       <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.dropdownButton}>
         <Text style={styles.dropdownText}>{selectedNamHoc || "Chọn năm học"}</Text>
       </TouchableOpacity>
 
-      {/* Show a modal with academic year options */}
+      {/* Mở Modal */}
       <Modal
         visible={modalVisible}
         animationType="fade"
@@ -118,8 +117,8 @@ export default function Thoikhoabieu() {
                 renderItem={({ item }) => (
                   <TouchableOpacity
                     onPress={() => {
-                      setSelectedNamHoc(item); // Set the selected academic year
-                      setModalVisible(false); // Close the dropdown/modal
+                      setSelectedNamHoc(item); 
+                      setModalVisible(false); 
                     }}
                     style={styles.modalItem}
                   >
@@ -134,13 +133,13 @@ export default function Thoikhoabieu() {
 
       <Button title="Tìm kiếm" onPress={handleSearch} />
 
-      {/* Display filtered timetable data */}
+      {/* Lọc thời khoá biểu */}
       <FlatList
         data={filteredData}
-        keyExtractor={(item) => item[0].toString()} // Timetable entry ID (ma_tkb)
+        keyExtractor={(item) => item[0].toString()} 
         renderItem={({ item }) => {
-          const id = item[0]; // Timetable entry ID (ma_tkb)
-          const note = notes.find(n => n.ma_tkb === id); // Find the note for this timetable entry
+          const id = item[0]; 
+          const note = notes.find(n => n.ma_tkb === id); 
 
           return (
             <View style={styles.item}>
@@ -155,13 +154,13 @@ export default function Thoikhoabieu() {
                   <Text style={styles.buttonText}>Thêm Ghi Chú</Text>
                 </TouchableOpacity>
 
-                {/* Delete note button */}
+                {/* Xoá ghi chú */}
                 <TouchableOpacity onPress={() => handleDeleteNote(id)} style={styles.deleteButton}>
                   <Text style={styles.buttonText}>Xóa</Text>
                 </TouchableOpacity>
               </View>
 
-              {/* Display the note content */}
+              {/* Hiện ghi chú */}
               <Text style={styles.noteText}>{note ? note.content : "Chưa có ghi chú"}</Text>
             </View>
           );
