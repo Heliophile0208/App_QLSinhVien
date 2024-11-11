@@ -11,22 +11,40 @@
 
 ## Cài đặt
 
-# Bước 1: Cài đặt môi trường phát triển
+#### Bước 1: Cài đặt môi trường phát triển
 
-- **Node.js**, **Android Studio**, **Expo CLI** và **Visual Studio Code**
+- **Node.js**, **Android Studio** và **Visual Studio Code**
+
 - Các công cụ cần thiết để phát triển ứng dụng React Native.
+
 + npm install expo
++ npm install -g expo-cli
 + npm install @react-navigation/native
 + npm install react-native-screens react-native-safe-area-context
 + npm install @react-navigation/stack
 + npm install expo-router
 + npm install react-native-gesture-handler react-native-reanimated
-+ 
-# Bước 2: Cài đặt các Extension cần thiết
++ npx expo install react-native-screens
++ npx expo install expo-linking
++ npx expo install expo-constants
++ npx expo install expo-status-bar
++ npx expo install react-native-gesture-handler
 
-- **React Native**, **Java Script**, và các extension khác hỗ trợ phát triển.
+#### Bước 2: Cài đặt các Extension cần thiết
 
-# Bước 3: Chạy dự án 
+- **ES7 + React/Redux/React-Native snippets**, **React Native Tools**, **Babel JavaScript**,
+ và các extension khác hỗ trợ phát triển.
+
+#### Bước 3: Tạo Folder dự án
++ Mở hộp thoại Terminal ( Windows + R -> Nhập CMD ) hoặc PowerShell ( Windows + X -> Tìm PowerShell )
++ Tạo dự án trong ổ đĩa cần lưu: expo init my-new-project
++ Điều hướng đến folder vừa tạo: cd my-new-project
++ Chạy dự án trên máy ảo: npx expo start
+
+#### Bước 4: Mở và chạy dự án sinh viên
+
+- Thêm vào file app.json:
+   **"scheme": "your-app-scheme"**
 - Dán **app** và **data** vào folder dự án của bạn
   
 ## Clone dự án
