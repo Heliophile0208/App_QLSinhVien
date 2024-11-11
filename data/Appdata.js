@@ -2,8 +2,12 @@
 
 const database = {
     quanlysinhvien: {
-        diem: {
-            columns: ["id", "ma_sinh_vien", "ma_mon_hoc", "diem"],
+       diem: {
+            columns: ["ma_diem", "ma_sinh_vien", "ma_mon_hoc", "diem","ma_loai_diem"],
+            data: []
+        },
+        loai_diem: {
+            columns:[ "ma_loai_diem", "ten_loai"],
             data: []
         },
         Khoa: {
