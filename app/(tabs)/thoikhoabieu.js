@@ -14,6 +14,12 @@ export default function Thoikhoabieu() {
   const [currentNoteTitle, setCurrentNoteTitle] = useState("");
   const [currentNoteContent, setCurrentNoteContent] = useState("");
 
+// Lấy tên phòng
+const getRoomName = (roomId) => {
+  const room = database.phong_hoc.find(room => room.id === roomId);
+  return room ? room.ten_phong : "Không xác định"; // Return the room name or default text if not found
+};
+
   // Lấy năm học từ thời khoá biểu
   const namHocOptions = [...new Set(thoiKhoaBieu.data.map(item => item[8]))]; 
   // Lọc dữ liệu
@@ -140,14 +146,15 @@ export default function Thoikhoabieu() {
         renderItem={({ item }) => {
           const id = item[0]; 
           const note = notes.find(n => n.ma_tkb === id); 
-
+         const roomname =getRoomName(item[3]);
+        
           return (
             <View style={styles.item}>
               <Text style={styles.text}>Thứ: {item[4]}</Text>
               <Text style={styles.text}>Giờ: {item[6]} - {item[7]}</Text>
               <Text style={styles.text}>Mã lớp: {item[1]}</Text>
               <Text style={styles.text}>Mã môn: {item[2]}</Text>
-              <Text style={styles.text}>Phòng: {item[3]}</Text>
+              <Text style={styles.text}>Phòng: {roomname}</Text>
 
               <View style={{ flexDirection: "row" }}>
                 <TouchableOpacity onPress={() => handleAddOrEditNote(id)} style={styles.addNoteButton}>
