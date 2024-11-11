@@ -31,8 +31,10 @@
 
 #### Bước 2: Cài đặt các Extension trong Visual Studio Code
 
-- **ES7 + React/Redux/React-Native snippets**, **React Native Tools**, **Babel JavaScript**,
- và các extension khác hỗ trợ phát triển.
+- **ES7 + React/Redux/React-Native snippets**
+- **React Native Tools**
+- **Babel JavaScript**
+- Các extension khác hỗ trợ phát triển...
 
 #### Bước 3: Tạo Folder dự án
 + Mở hộp thoại Terminal ( Windows + R -> Nhập CMD ) hoặc PowerShell ( Windows + X -> Tìm PowerShell )
