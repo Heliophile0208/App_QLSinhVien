@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 export default function _layout() {
   const router = useRouter();
-  const isLoggedIn = false; // Thay đổi điều này dựa trên trạng thái đăng nhập thực tế
+  const isLoggedIn = false; 
 
   useEffect(() => {
     if (!isLoggedIn) {
