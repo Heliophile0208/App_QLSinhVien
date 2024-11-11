@@ -11,7 +11,7 @@
 
 ## Cài đặt
 
-### Bước 1: Cài đặt môi trường phát triển
+# Bước 1: Cài đặt môi trường phát triển
 
 - **Node.js**, **Android Studio**, **Expo CLI** và **Visual Studio Code**
 - Các công cụ cần thiết để phát triển ứng dụng React Native.
@@ -22,11 +22,11 @@
 + npm install expo-router
 + npm install react-native-gesture-handler react-native-reanimated
 + 
-### Bước 2: Cài đặt các Extension cần thiết
+# Bước 2: Cài đặt các Extension cần thiết
 
 - **React Native**, **Java Script**, và các extension khác hỗ trợ phát triển.
 
-### Bước 3: Chạy dự án 
+# Bước 3: Chạy dự án 
 - Dán **app** và **data** vào folder dự án của bạn
   
 ## Clone dự án
