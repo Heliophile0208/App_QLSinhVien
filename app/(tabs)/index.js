@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { useRoute, useNavigation } from "@react-navigation/native"; // Import useNavigation
-import database from "../../data/Appdata"; // Import dữ liệu sinh viên
+import { useRoute, useNavigation } from "@react-navigation/native"; 
+import database from "../../data/Appdata"; 
 
 export default function StudentListScreen() {
   const route = useRoute(); 
@@ -26,7 +26,7 @@ export default function StudentListScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {/* Navigate back to Login Screen */}
+        {/* Quay về Login Screen */}
         <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
           <Image style={styles.backButton} source={require('../../data/images/back.png')} />
         </TouchableOpacity>
@@ -43,7 +43,7 @@ export default function StudentListScreen() {
           >
             <View>
               <Text style={styles.studentText}>
-                {student[1]} - {student[6]} {/* Assuming student[1] is name and student[6] is another property */}
+                {student[1]} - {student[6]} {/*  */}
               </Text>
             </View>
           </TouchableOpacity>
