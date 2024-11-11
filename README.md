@@ -12,10 +12,10 @@
 ## Cài đặt
 
 #### Bước 1: Cài đặt môi trường phát triển
-##### Các phần mềm cần thiết trong quá trình phát triển
+ Các phần mềm cần thiết trong quá trình phát triển
 - **Node.js**, **Android Studio** và **Visual Studio Code**
 
-##### Thư viện cần thiết cho Expo Router
+ Thư viện cần thiết cho Expo Router
 + npm install expo
 + npm install -g expo-cli
 + npm install @react-navigation/native
