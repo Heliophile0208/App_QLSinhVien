@@ -12,11 +12,10 @@
 ## Cài đặt
 
 #### Bước 1: Cài đặt môi trường phát triển
-
+##### Các phần mềm cần thiết trong quá trình phát triển
 - **Node.js**, **Android Studio** và **Visual Studio Code**
 
-##### Các công cụ cần thiết để phát triển ứng dụng React Native.
-
+##### Thư viện cần thiết cho Expo Router
 + npm install expo
 + npm install -g expo-cli
 + npm install @react-navigation/native
@@ -30,7 +29,7 @@
 + npx expo install expo-status-bar
 + npx expo install react-native-gesture-handler
 
-#### Bước 2: Cài đặt các Extension cần thiết
+#### Bước 2: Cài đặt các Extension
 
 - **ES7 + React/Redux/React-Native snippets**, **React Native Tools**, **Babel JavaScript**,
  và các extension khác hỗ trợ phát triển.
