@@ -13,17 +13,22 @@
 
 ### Bước 1: Cài đặt môi trường phát triển
 
-- Cài **Node.js**, **Android Studio**, và **Visual Studio Code**.
-- Cài các công cụ cần thiết để phát triển ứng dụng React Native.
-
+- **Node.js**, **Android Studio**, **Expo CLI** và **Visual Studio Code**
+- Các công cụ cần thiết để phát triển ứng dụng React Native.
++ npm install expo
++ npm install @react-navigation/native
++ npm install react-native-screens react-native-safe-area-context
++ npm install @react-navigation/stack
++ npm install expo-router
++ npm install react-native-gesture-handler react-native-reanimated
++ 
 ### Bước 2: Cài đặt các Extension cần thiết
 
-- Cài **React Native**, **JSX ES6**, và các extension khác hỗ trợ phát triển.
+- **React Native**, **Java Script**, và các extension khác hỗ trợ phát triển.
 
-### Bước 3: Cài Expo Router
-
-Cài Expo Router bằng lệnh:
-npm install expo-router
+### Bước 3: Chạy dự án 
+- Dán **app** và **data** vào folder dự án của bạn
+  
 ## Clone dự án
 ```bash
 git clone https://github.com/Heliophile0208/App_QLSinhVien.git
