@@ -14,14 +14,15 @@ export default function Thoikhoabieu() {
   const [currentNoteTitle, setCurrentNoteTitle] = useState("");
   const [currentNoteContent, setCurrentNoteContent] = useState("");
 
-// Lấy tên phòng
-const getRoomName = (roomId) => {
-  const room = database.phong_hoc.find(room => room.ma_phong_hoc === roomId);
-  return room ? room.ten_phong : "Không xác định"; // Return the room name or default text if not found
-};
+  // Lấy tên phòng
+  const getRoomName = (roomId) => {
+    const room = database.phong_hoc.find(room => room.ma_phong_hoc === roomId);
+    return room ? room.ten_phong : "Không xác định"; // Return the room name or default text if not found
+  };
 
   // Lấy năm học từ thời khoá biểu
   const namHocOptions = [...new Set(thoiKhoaBieu.data.map(item => item[8]))]; 
+  
   // Lọc dữ liệu
   const handleSearch = () => {
     const results = thoiKhoaBieu.data.filter(item => {
@@ -33,20 +34,20 @@ const getRoomName = (roomId) => {
     setFilteredData(results);
   };
 
- // Thêm ghi chú
+  // Thêm ghi chú hoặc chỉnh sửa ghi chú
   const handleAddOrEditNote = (id) => {
-    setCurrentNoteId(id); 
-    const existingNote = notes.find(note => note.ma_tkb === id); 
+    setCurrentNoteId(id);
+    const existingNote = notes.find(note => note.ma_tkb === id);
 
     if (existingNote) {
-      setCurrentNoteTitle(existingNote.title); 
-      setCurrentNoteContent(existingNote.content); 
+      setCurrentNoteTitle(existingNote.title);
+      setCurrentNoteContent(existingNote.content);
     } else {
-      setCurrentNoteTitle(""); 
-      setCurrentNoteContent(""); 
+      setCurrentNoteTitle("");
+      setCurrentNoteContent("");
     }
 
-    setModalVisible(true); // Modal thêm/sửa note
+    setModalVisible(true); // Mở Modal
   };
 
   // Lưu ghi chú
@@ -60,27 +61,27 @@ const getRoomName = (roomId) => {
         created_at: new Date().toISOString(),
       };
 
-      
       const updatedNotes = notes.filter(note => note.ma_tkb !== currentNoteId); // Remove old note
-      updatedNotes.push(newNote); 
+      updatedNotes.push(newNote); // Add new or updated note
       setNotes(updatedNotes);
       database.quanlysinhvien.notes.data = updatedNotes; // Lưu vào database
 
-      console.log("Note saved:", newNote); 
+      console.log("Note saved:", newNote);
 
-      setModalVisible(false); 
+      setModalVisible(false); // Đóng Modal sau khi lưu
     }
   };
 
-  // Xoá note
+  // Xoá ghi chú
   const handleDeleteNote = (id) => {
-  
     const updatedNotes = notes.filter(note => note.ma_tkb !== id);
 
-    setNotes(updatedNotes); 
-    database.quanlysinhvien.notes.data = updatedNotes; 
+    setNotes(updatedNotes);
+    database.quanlysinhvien.notes.data = updatedNotes; // Lưu vào database
 
-    console.log("Note deleted for timetable ID:", id); 
+    console.log("Note deleted for timetable ID:", id);
+
+    setModalVisible(false); // Đóng Modal sau khi xóa
   };
 
   return (
@@ -107,7 +108,7 @@ const getRoomName = (roomId) => {
         <Text style={styles.dropdownText}>{selectedNamHoc || "Chọn năm học"}</Text>
       </TouchableOpacity>
 
-      {/* Mở Modal */}
+      {/* Modal cho Năm Học */}
       <Modal
         visible={modalVisible}
         animationType="fade"
@@ -117,21 +118,35 @@ const getRoomName = (roomId) => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <ScrollView style={styles.scrollView}>
-              <FlatList
-                data={namHocOptions}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setSelectedNamHoc(item); 
-                      setModalVisible(false); 
-                    }}
-                    style={styles.modalItem}
-                  >
-                    <Text style={styles.modalItemText}>{item}</Text>
-                  </TouchableOpacity>
-                )}
+              {/* Input cho ghi chú */}
+              <TextInput
+                style={styles.input}
+                placeholder="Tiêu đề ghi chú"
+                value={currentNoteTitle}
+                onChangeText={setCurrentNoteTitle}
               />
+              <TextInput
+                style={[styles.input, { height: 150 }]}
+                placeholder="Nội dung ghi chú"
+                value={currentNoteContent}
+                onChangeText={setCurrentNoteContent}
+                multiline
+              />
+
+              {/* Nút Lưu */}
+              <TouchableOpacity onPress={handleSaveNote} style={styles.addNoteButton}>
+                <Text style={styles.buttonText}>Lưu Ghi Chú</Text>
+              </TouchableOpacity>
+
+              {/* Nút Xóa */}
+              {currentNoteId && (
+                <TouchableOpacity 
+                  onPress={() => handleDeleteNote(currentNoteId)} 
+                  style={styles.deleteButton}
+                >
+                  <Text style={styles.buttonText}>Xóa Ghi Chú</Text>
+                </TouchableOpacity>
+              )}
             </ScrollView>
           </View>
         </View>
@@ -142,11 +157,11 @@ const getRoomName = (roomId) => {
       {/* Lọc thời khoá biểu */}
       <FlatList
         data={filteredData}
-        keyExtractor={(item) => item[0].toString()} 
+        keyExtractor={(item) => item[0].toString()}
         renderItem={({ item }) => {
           const id = item[0]; 
           const note = notes.find(n => n.ma_tkb === id); 
-         const roomname =getRoomName(item[3]);
+          const roomname = getRoomName(item[3]);
         
           return (
             <View style={styles.item}>
@@ -159,11 +174,6 @@ const getRoomName = (roomId) => {
               <View style={{ flexDirection: "row" }}>
                 <TouchableOpacity onPress={() => handleAddOrEditNote(id)} style={styles.addNoteButton}>
                   <Text style={styles.buttonText}>Thêm Ghi Chú</Text>
-                </TouchableOpacity>
-
-                {/* Xoá ghi chú */}
-                <TouchableOpacity onPress={() => handleDeleteNote(id)} style={styles.deleteButton}>
-                  <Text style={styles.buttonText}>Xóa</Text>
                 </TouchableOpacity>
               </View>
 
@@ -226,15 +236,6 @@ const styles = StyleSheet.create({
   scrollView: {
     maxHeight: 300,
   },
-  modalItem: {
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-  },
-  modalItemText: {
-    fontSize: 18,
-    color: "#2c3e50",
-  },
   item: {
     padding: 15,
     borderBottomWidth: 1,
@@ -252,19 +253,18 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginTop: 10,
-    flex: 1,
+    alignItems: "center",
   },
   deleteButton: {
     backgroundColor: "#e74c3c",
     padding: 10,
     borderRadius: 5,
     marginTop: 10,
-    flex: 1,
+    alignItems: "center",
   },
   buttonText: {
-    color: "white",
+    color: "#fff",
     fontWeight: "bold",
-    textAlign: "center",
   },
   noteText: {
     marginTop: 10,
