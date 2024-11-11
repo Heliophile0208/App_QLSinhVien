@@ -42,8 +42,8 @@
 
 #### Bước 4: Mở và chạy dự án sinh viên
 
-- Sửa vào file app.json:
-   **"scheme": "your-app-scheme"**
+- Sửa file app.json:
+ "scheme": "myapp" -> **"scheme": "your-app-scheme"**
 - Dán **app** và **data** vào folder dự án của bạn
   
 ## Clone dự án
