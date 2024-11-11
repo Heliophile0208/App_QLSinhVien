@@ -33,7 +33,7 @@ export default function CreateAccount() {
 
     // Kiểm tra nếu mã sinh viên đã được đăng ký trong bảng tai_khoan
     const existingStudentAccount = database.quanlysinhvien.tai_khoan.data.find(
-      (account) => account[4].toLowerCase() === maSinhVienLower // Chuyển mã sinh viên trong tài khoản về chữ thường
+      (account) => account[4].toLowerCase() === maSinhVienLower 
     );
 
     if (existingStudentAccount) {
@@ -54,7 +54,7 @@ export default function CreateAccount() {
       return;
     }
 
-    // Kiểm tra nếu tên người dùng đã tồn tại trong bảng tai_khoan (chuyển tên người dùng về chữ thường)
+  
     const existingUser = database.quanlysinhvien.tai_khoan.data.find(
       (account) => account[1].toLowerCase() === username.toLowerCase() 
     );
