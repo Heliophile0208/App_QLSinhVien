@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, TextInput, Button, Modal, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, FlatList, TextInput, Button, Modal, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import database from "../../data/Appdata"; // Simulated database
 
 export default function Thoikhoabieu() {
   const thoiKhoaBieu = database.quanlysinhvien.thoi_khoa_bieu;
-
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedWeek, setSelectedWeek] = useState("");
+  const [selectedNamHoc, setSelectedNamHoc] = useState(""); // State for selected academic year
   const [filteredData, setFilteredData] = useState([]);
   const [notes, setNotes] = useState(database.quanlysinhvien.notes.data); // Initial notes
   const [modalVisible, setModalVisible] = useState(false);
@@ -14,12 +14,16 @@ export default function Thoikhoabieu() {
   const [currentNoteTitle, setCurrentNoteTitle] = useState("");
   const [currentNoteContent, setCurrentNoteContent] = useState("");
 
-  // Handle searching for specific classes and weeks
+  // Extract unique academic years (nam_hoc) from the timetable data
+  const namHocOptions = [...new Set(thoiKhoaBieu.data.map(item => item[8]))]; // Assuming nam_hoc is at index 8 in thoi_khoa_bieu
+
+  // Handle searching for specific classes, weeks, and academic year
   const handleSearch = () => {
     const results = thoiKhoaBieu.data.filter(item => {
       const matchesClass = selectedClass ? item[1] === selectedClass : true;
       const matchesWeek = selectedWeek ? item[5].toString() === selectedWeek : true;
-      return matchesClass && matchesWeek;
+      const matchesNamHoc = selectedNamHoc ? item[8] === selectedNamHoc : true; // Filter by nam_hoc
+      return matchesClass && matchesWeek && matchesNamHoc;
     });
     setFilteredData(results);
   };
@@ -92,6 +96,42 @@ export default function Thoikhoabieu() {
         onChangeText={setSelectedWeek}
         keyboardType="numeric"
       />
+
+      {/* Dropdown for Nam Hoc (Academic Year) */}
+      <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.dropdownButton}>
+        <Text style={styles.dropdownText}>{selectedNamHoc || "Chọn năm học"}</Text>
+      </TouchableOpacity>
+
+      {/* Show a modal with academic year options */}
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <ScrollView style={styles.scrollView}>
+              <FlatList
+                data={namHocOptions}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedNamHoc(item); // Set the selected academic year
+                      setModalVisible(false); // Close the dropdown/modal
+                    }}
+                    style={styles.modalItem}
+                  >
+                    <Text style={styles.modalItemText}>{item}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
       <Button title="Tìm kiếm" onPress={handleSearch} />
 
       {/* Display filtered timetable data */}
@@ -104,13 +144,13 @@ export default function Thoikhoabieu() {
 
           return (
             <View style={styles.item}>
-              <Text>Thứ: {item[4]}</Text>
-              <Text>Giờ: {item[6]} - {item[7]}</Text>
-              <Text>Mã lớp: {item[1]}</Text>
-              <Text>Mã môn: {item[2]}</Text>
-              <Text>Phòng: {item[3]}</Text>
+              <Text style={styles.text}>Thứ: {item[4]}</Text>
+              <Text style={styles.text}>Giờ: {item[6]} - {item[7]}</Text>
+              <Text style={styles.text}>Mã lớp: {item[1]}</Text>
+              <Text style={styles.text}>Mã môn: {item[2]}</Text>
+              <Text style={styles.text}>Phòng: {item[3]}</Text>
 
-              <View style={{flexDirection:'row'}}>
+              <View style={{ flexDirection: "row" }}>
                 <TouchableOpacity onPress={() => handleAddOrEditNote(id)} style={styles.addNoteButton}>
                   <Text style={styles.buttonText}>Thêm Ghi Chú</Text>
                 </TouchableOpacity>
@@ -122,45 +162,11 @@ export default function Thoikhoabieu() {
               </View>
 
               {/* Display the note content */}
-              <Text>{note ? note.content : "Chưa có ghi chú"}</Text>
+              <Text style={styles.noteText}>{note ? note.content : "Chưa có ghi chú"}</Text>
             </View>
           );
         }}
       />
-
-      {/* Modal for adding/editing notes */}
-      <Modal
-        visible={modalVisible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <TextInput
-              style={styles.modalInput}
-              placeholder="Tiêu đề ghi chú"
-              value={currentNoteTitle}
-              onChangeText={setCurrentNoteTitle}
-            />
-            <TextInput
-              style={styles.modalInput}
-              placeholder="Nội dung ghi chú"
-              value={currentNoteContent}
-              onChangeText={setCurrentNoteContent}
-            />
-
-            <View style={styles.modalActions}>
-              <TouchableOpacity onPress={handleSaveNote} style={styles.saveButton}>
-                <Text style={styles.buttonText}>Lưu</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.cancelButton}>
-                <Text style={styles.buttonText}>Hủy</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 }
@@ -172,74 +178,91 @@ const styles = StyleSheet.create({
     backgroundColor: "#f7f9fc",
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
+    color: "#2c3e50",
   },
   input: {
     height: 50,
     borderColor: "#ccc",
     borderWidth: 1,
-    marginBottom: 20,
+    marginBottom: 15,
     paddingHorizontal: 10,
-  },
-  item: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  addNoteButton: {
-    backgroundColor: "#4CAF50",
-    padding: 10,
     borderRadius: 5,
-    marginTop: 10,
+    backgroundColor: "#fff",
   },
-  deleteButton: {
-    backgroundColor: "red",
-    padding: 10,
+  dropdownButton: {
+    backgroundColor: "#3498db",
+    paddingVertical: 15,
     borderRadius: 5,
-    marginTop: 10,
+    marginBottom: 20,
   },
-  buttonText: {
+  dropdownText: {
     color: "white",
-    fontWeight: "bold",
+    fontSize: 16,
     textAlign: "center",
   },
   modalOverlay: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   modalContainer: {
     backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
     width: "80%",
+    maxHeight: 400,
   },
-  modalInput: {
-    height: 50,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
+  scrollView: {
+    maxHeight: 300,
   },
-  modalActions: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  modalItem: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
   },
-  saveButton: {
+  modalItemText: {
+    fontSize: 18,
+    color: "#2c3e50",
+  },
+  item: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    backgroundColor: "#fff",
+    marginBottom: 10,
+    borderRadius: 5,
+  },
+  text: {
+    fontSize: 16,
+    color: "#34495e",
+  },
+  addNoteButton: {
     backgroundColor: "#4CAF50",
     padding: 10,
     borderRadius: 5,
+    marginTop: 10,
     flex: 1,
-    marginRight: 10,
   },
-  cancelButton: {
-    backgroundColor: "red",
+  deleteButton: {
+    backgroundColor: "#e74c3c",
     padding: 10,
     borderRadius: 5,
+    marginTop: 10,
     flex: 1,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  noteText: {
+    marginTop: 10,
+    fontStyle: "italic",
+    color: "#7f8c8d",
   },
 });
