@@ -59,7 +59,7 @@ export default function ThongTinTaiKhoan() {
                 </View>
 
                 {/* Hiển thị điểm của sinh viên */}
-                <Text style={styles.sectionTitle}>Điểm Sinh Viên</Text>
+                <Text style={styles.sectionTitle}>Kết Quả Học Tập</Text>
                 {studentScores.length > 0 ? (
                     studentScores.map((score, index) => (
                         <View key={index} style={styles.scoreItem}>
