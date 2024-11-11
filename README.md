@@ -8,6 +8,8 @@
 
 
 ## Cài đặt
+## Extension
+- **npm install @react-native-picker/picker**
 
 ### 1. Clone dự án
 
@@ -15,6 +17,5 @@ Clone dự án về máy tính của bạn bằng lệnh sau:
 
 ```bash
 git clone https://github.com/username/App_QLSinhVien.git
-### 2. Extension
 
-**npm install @react-native-picker/picker**
+
