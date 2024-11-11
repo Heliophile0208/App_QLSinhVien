@@ -16,7 +16,7 @@ export default function Thoikhoabieu() {
 
 // Lấy tên phòng
 const getRoomName = (roomId) => {
-  const room = database.phong_hoc.find(room => room.id === roomId);
+  const room = database.phong_hoc.find(room => room.ma_phong_hoc === roomId);
   return room ? room.ten_phong : "Không xác định"; // Return the room name or default text if not found
 };
 
