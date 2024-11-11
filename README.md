@@ -15,7 +15,7 @@
 
 - **Node.js**, **Android Studio** và **Visual Studio Code**
 
-- Các công cụ cần thiết để phát triển ứng dụng React Native.
+##### Các công cụ cần thiết để phát triển ứng dụng React Native.
 
 + npm install expo
 + npm install -g expo-cli
