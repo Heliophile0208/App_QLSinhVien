@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import {View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import database from "../data/Appdata";
