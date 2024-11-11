@@ -7,9 +7,17 @@ const database = {
             data: []
         },
         loai_diem: {
-            columns:[ "ma_loai_diem", "ten_loai"],
-            data: []
-        },
+    columns: ["ma_loai_diem", "ten_loai"],
+    data: [
+        ["KTTX", "Điểm Kiểm Tra Thường Xuyên (Hệ số 1)"],
+        ["KTĐK", "Điểm Kiểm Tra Định Kỳ (Hệ số 2)"],
+        ["TBKT", "Trung Bình Kiểm Tra"],
+        ["THI", "Điểm Thi"],
+        ["TKM", "Tổng Kết Môn"],
+        ["DQT", "Điểm Quy Đổi"],
+        ["KQ", "Kết Quả"]
+    ]
+}
         Khoa: {
             columns: ["ma_khoa", "ten_khoa"],
             data: [
