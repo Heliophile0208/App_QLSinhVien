@@ -17,7 +17,7 @@ const database = {
         ["DQT", "Điểm Quy Đổi"],
         ["KQ", "Kết Quả"]
     ]
-}
+},
         Khoa: {
             columns: ["ma_khoa", "ten_khoa"],
             data: [
