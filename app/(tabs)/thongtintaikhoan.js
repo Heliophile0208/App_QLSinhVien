@@ -4,20 +4,20 @@ import { useRoute } from "@react-navigation/native";
 
 export default function ThongTinTaiKhoan() {
     const route = useRoute();
-    const { student } = route.params; 
+    const { ma_sinh_vien } = route.params; 
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Thông Tin Tài Khoản</Text>
             <View style={styles.detailContainer}>
-                <Text style={styles.detail}>Mã sinh viên: <Text style={styles.value}>{student[0]}</Text></Text>
-                <Text style={styles.detail}>Họ tên: <Text style={styles.value}>{student[1]}</Text></Text>
-                <Text style={styles.detail}>Ngày sinh: <Text style={styles.value}>{student[2]}</Text></Text>
-                <Text style={styles.detail}>Giới tính: <Text style={styles.value}>{student[3] === 1 ? 'Nam' : 'Nữ'}</Text></Text>
-                <Text style={styles.detail}>Địa chỉ: <Text style={styles.value}>{student[4]}</Text></Text>
-                <Text style={styles.detail}>Email: <Text style={styles.value}>{student[5]}</Text></Text>
-                <Text style={styles.detail}>Số điện thoại: <Text style={styles.value}>{student[6]}</Text></Text>
-                <Text style={styles.detail}>Mã lớp: <Text style={styles.value}>{student[7]}</Text></Text>
+                <Text style={styles.detail}>Mã sinh viên: <Text style={styles.value}>{ma_sinh_vien[0]}</Text></Text>
+                <Text style={styles.detail}>Họ tên: <Text style={styles.value}>{ma_sinh_vien[1]}</Text></Text>
+                <Text style={styles.detail}>Ngày sinh: <Text style={styles.value}>{ma_sinh_vien[2]}</Text></Text>
+                <Text style={styles.detail}>Giới tính: <Text style={styles.value}>{ma_sinh_vien[3] === 1 ? 'Nam' : 'Nữ'}</Text></Text>
+                <Text style={styles.detail}>Địa chỉ: <Text style={styles.value}>{ma_sinh_vien[4]}</Text></Text>
+                <Text style={styles.detail}>Email: <Text style={styles.value}>{ma_sinh_vien[5]}</Text></Text>
+                <Text style={styles.detail}>Số điện thoại: <Text style={styles.value}>{ma_sinh_vien[6]}</Text></Text>
+                <Text style={styles.detail}>Mã lớp: <Text style={styles.value}>{ma_sinh_vien[7]}</Text></Text>
             </View>
         </View>
     );
