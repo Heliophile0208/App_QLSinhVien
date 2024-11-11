@@ -13,7 +13,8 @@ export default function _layout() {
             <Tabs.Screen name="thoikhoabieu" options={{
         tabBarIcon: ({ color }) => <Image source={require('../../data/images/list.png')} style={styles.img} />
       }} />
-                        <Tabs.Screen name="thongtintaikhoan" options={{
+                        <Tabs.Screen name="thongtintaikhoan" initialParams={{ma_sinh_vien}}
+                        options={{
 
         tabBarIcon: ({ color }) => <Image source={require('../../data/images/user.png')} style={styles.img} 
         />
