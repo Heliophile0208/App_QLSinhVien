@@ -1,14 +1,14 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
 import React, { useState } from 'react';
-import { useRouter } from 'expo-router';  // Import useRouter từ expo-router
-import database from '../data/Appdata'; // Import cơ sở dữ liệu của bạn
+import { useRouter } from 'expo-router';  
+import database from '../data/Appdata'; 
 
 export default function CreateAccount() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [maSinhVien, setMaSinhVien] = useState("");  // Thêm state cho ma_sinh_vien
-  const router = useRouter(); // Khởi tạo useRouter
+  const [maSinhVien, setMaSinhVien] = useState("");  
+  const router = useRouter(); 
 
   const handleCreateAccount = () => {
 
