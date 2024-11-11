@@ -33,7 +33,7 @@ export default function LoginScreen() {
       if (student) {
         const maLop = student[7]; // Lấy mã lớp của sinh viên
         // Điều hướng đến trang chứa thông tin lớp và truyền maSinhVien
-        navigation.navigate("(tabs)", { screen: "index", params: { maSinhVien } }); // Đảm bảo tên màn hình là đúng
+        navigation.navigate("(tabs)", { screen: "index", params: { maSinhVien } });
 
       } else {
         Alert.alert("Thông báo", "Không tìm thấy thông tin sinh viên.");
