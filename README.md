@@ -29,7 +29,7 @@
 + npx expo install expo-status-bar
 + npx expo install react-native-gesture-handler
 
-#### Bước 2: Cài đặt các Extension
+#### Bước 2: Cài đặt các Extension trong Visual Studio Code
 
 - **ES7 + React/Redux/React-Native snippets**, **React Native Tools**, **Babel JavaScript**,
  và các extension khác hỗ trợ phát triển.
