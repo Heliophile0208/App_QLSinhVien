@@ -2,13 +2,13 @@ import {View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, Aler
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import database from "../data/Appdata";
-
+import { useStudent } from "../StudentContext";
 export default function LoginScreen() {
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
-
+ const { setMaSinhVien } = useStudent();
   const handleLogin = () => {
     if (username === "" || pass === "") {
       Alert.alert("Thông báo", "Vui lòng nhập Tên người dùng và mật khẩu");
