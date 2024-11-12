@@ -1,43 +1,110 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, TextInput, Button, Modal, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
-import database from "../../data/Appdata"; // Simulated database
+import {
+  View,
+  Text,
+  FlatList,
+  TextInput,
+  Button,
+  Modal,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import database from "../../data/Appdata"; // Giả lập cơ sở dữ liệu
 
 export default function Thoikhoabieu() {
-  const thoiKhoaBieu = database.quanlysinhvien.thoi_khoa_bieu;
+  // Tính giờ kết thúc
+  const calculateEndTime = (startTime, duration) => {
+    const [hour, minute] = startTime.split(":").map(Number);
+    const endHour = hour + duration;
+    return `${endHour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  // Hàm tạo lịch trình
+  function generateTimetable() {
+    const timetableData = [];
+    const monHocData = database.quanlysinhvien.mon_hoc.data;
+
+    database.quanlysinhvien.thoi_khoa_bieu.data.forEach((entry) => {
+      const maMonHoc = entry[2];
+      const maLop = entry[1];
+      const maPhong = entry[3];
+      const namHoc = entry[4];
+      const monHoc = monHocData.find((m) => m[0] === maMonHoc);
+
+      if (!monHoc) return;
+      const soTuan = monHoc[6];
+      const soBuoi = monHoc[5];
+      let currentDay = 2; // Bắt đầu từ thứ 2
+      let startTime = "08:00"; // Khởi điểm giờ học
+
+      for (let i = 0; i < soBuoi; i++) {
+        if (currentDay > 6) {
+          currentDay = 2;
+          startTime = "08:00"; // Reset giờ học cho tuần mới
+        }
+
+        const endTime = calculateEndTime(startTime, 2); // 2 giờ học
+        timetableData.push({
+          ma_tkb: entry[0],
+          ma_lop: maLop,
+          ma_mon_hoc: maMonHoc,
+          ma_phong: maPhong,
+          thu: `Thứ ${currentDay}`,
+          tuan: Math.floor(i / 3) + 1,
+          gio_bat_dau: startTime,
+          gio_ket_thuc: endTime,
+          nam_hoc: namHoc,
+        });
+
+        // Cập nhật thời gian bắt đầu cho buổi tiếp theo trong ngày
+        startTime = calculateEndTime(startTime, 3); // Giờ kế tiếp bắt đầu sau 3 tiếng
+
+        if (startTime >= "17:00") { // Nếu hết giờ học trong ngày, chuyển sang ngày tiếp theo
+          currentDay++;
+          startTime = "08:00";
+        }
+      }
+    });
+
+    return timetableData;
+  }
+
+  const thoiKhoaBieu = generateTimetable(); // Tạo lịch trình
+
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedWeek, setSelectedWeek] = useState("");
-  const [selectedNamHoc, setSelectedNamHoc] = useState(""); 
+  const [selectedYear, setSelectedYear] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  const [notes, setNotes] = useState(database.quanlysinhvien.notes.data); 
+  const [notes, setNotes] = useState(database.quanlysinhvien.notes.data); // Ghi chú ban đầu
   const [modalVisible, setModalVisible] = useState(false);
   const [currentNoteId, setCurrentNoteId] = useState(null);
   const [currentNoteTitle, setCurrentNoteTitle] = useState("");
   const [currentNoteContent, setCurrentNoteContent] = useState("");
 
-  // Lấy tên phòng
-  const getRoomName = (roomId) => {
-    const room = database.phong_hoc.find(room => room.ma_phong_hoc === roomId);
-    return room ? room.ten_phong : "Không xác định"; // Return the room name or default text if not found
-  };
-
-  // Lấy năm học từ thời khoá biểu
-  const namHocOptions = [...new Set(thoiKhoaBieu.data.map(item => item[8]))]; 
-  
-  // Lọc dữ liệu
+  // Hàm tìm kiếm lớp, tuần, năm học
   const handleSearch = () => {
-    const results = thoiKhoaBieu.data.filter(item => {
-      const matchesClass = selectedClass ? item[1] === selectedClass : true;
-      const matchesWeek = selectedWeek ? item[5].toString() === selectedWeek : true;
-      const matchesNamHoc = selectedNamHoc ? item[8] === selectedNamHoc : true; 
-      return matchesClass && matchesWeek && matchesNamHoc;
+    const results = thoiKhoaBieu.filter((item) => {
+      const matchesClass = selectedClass ? item.ma_lop === selectedClass : true;
+      const matchesWeek = selectedWeek
+        ? item.tuan.toString() === selectedWeek
+        : true;
+      const matchesYear = selectedYear ? item.nam_hoc === selectedYear : true;
+
+      return (
+        matchesClass &&
+        (selectedWeek ? matchesWeek : true) &&
+        (selectedYear ? matchesYear : true)
+      );
     });
     setFilteredData(results);
   };
 
-  // Thêm ghi chú hoặc chỉnh sửa ghi chú
+  // Xử lý thêm hoặc sửa ghi chú
   const handleAddOrEditNote = (id) => {
     setCurrentNoteId(id);
-    const existingNote = notes.find(note => note.ma_tkb === id);
+    const existingNote = notes.find((note) => note.ma_tkb === id);
 
     if (existingNote) {
       setCurrentNoteTitle(existingNote.title);
@@ -46,8 +113,7 @@ export default function Thoikhoabieu() {
       setCurrentNoteTitle("");
       setCurrentNoteContent("");
     }
-
-    setModalVisible(true); // Mở Modal
+    setModalVisible(true);
   };
 
   // Lưu ghi chú
@@ -55,40 +121,31 @@ export default function Thoikhoabieu() {
     if (currentNoteId) {
       const newNote = {
         ma_ghi_chu: Date.now().toString(),
-        ma_tkb: currentNoteId, 
+        ma_tkb: currentNoteId,
         title: currentNoteTitle,
         content: currentNoteContent,
         created_at: new Date().toISOString(),
       };
-
-      const updatedNotes = notes.filter(note => note.ma_tkb !== currentNoteId); // Remove old note
-      updatedNotes.push(newNote); // Add new or updated note
+      const updatedNotes = notes.filter(
+        (note) => note.ma_tkb !== currentNoteId
+      );
+      updatedNotes.push(newNote);
       setNotes(updatedNotes);
-      database.quanlysinhvien.notes.data = updatedNotes; // Lưu vào database
-
-      console.log("Note saved:", newNote);
-
-      setModalVisible(false); // Đóng Modal sau khi lưu
+      database.quanlysinhvien.notes.data = updatedNotes;
+      setModalVisible(false);
     }
   };
 
-  // Xoá ghi chú
+  // Xóa ghi chú
   const handleDeleteNote = (id) => {
-    const updatedNotes = notes.filter(note => note.ma_tkb !== id);
-
+    const updatedNotes = notes.filter((note) => note.ma_tkb !== id);
     setNotes(updatedNotes);
-    database.quanlysinhvien.notes.data = updatedNotes; // Lưu vào database
-
-    console.log("Note deleted for timetable ID:", id);
-
-    setModalVisible(false); // Đóng Modal sau khi xóa
+    database.quanlysinhvien.notes.data = updatedNotes;
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Thời Khóa Biểu</Text>
-
-      {/* Lọc theo lớp và tuần */}
       <TextInput
         style={styles.input}
         placeholder="Nhập mã lớp"
@@ -102,87 +159,89 @@ export default function Thoikhoabieu() {
         onChangeText={setSelectedWeek}
         keyboardType="numeric"
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Nhập năm học"
+        value={selectedYear}
+        onChangeText={setSelectedYear}
+      />
+      <Button title="Tìm kiếm" onPress={handleSearch} />
 
-      {/* Modal cho Năm Học */}
-      <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.dropdownButton}>
-        <Text style={styles.dropdownText}>{selectedNamHoc || "Chọn năm học"}</Text>
-      </TouchableOpacity>
+      <FlatList
+        data={filteredData}
+        keyExtractor={(item, index) => index.toString()} // Sử dụng index làm key để kiểm tra lỗi
+        renderItem={({ item }) => {
+          const id = item.ma_tkb;
+          const note = notes.find((n) => n.ma_tkb === id);
 
-      {/* Modal cho Năm Học */}
+          return (
+            <View style={styles.item}>
+              <Text>Thứ: {item.thu}</Text>
+              <Text>
+                Giờ: {item.gio_bat_dau} - {item.gio_ket_thuc}
+              </Text>
+              <Text>Mã lớp: {item.ma_lop}</Text>
+              <Text>Mã môn: {item.ma_mon_hoc}</Text>
+              <Text>Phòng: {item.ma_phong}</Text>
+              <Text>Tuần: {item.tuan}</Text>
+              <Text>Năm học: {item.nam_hoc}</Text>
+              <View style={{ flexDirection: "row" }}>
+                <TouchableOpacity
+                  onPress={() => handleAddOrEditNote(id)}
+                  style={styles.addNoteButton}
+                >
+                  <Text style={styles.buttonText}>Thêm Ghi Chú</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleDeleteNote(id)}
+                  style={styles.deleteButton}
+                >
+                  <Text style={styles.buttonText}>Xóa</Text>
+                </TouchableOpacity>
+              </View>
+              <Text>{note ? note.content : "Chưa có ghi chú"}</Text>
+            </View>
+          );
+        }}
+      />
+
       <Modal
         visible={modalVisible}
-        animationType="fade"
+        animationType="slide"
         transparent={true}
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
-            <ScrollView style={styles.scrollView}>
-              {/* Input cho ghi chú */}
-              <TextInput
-                style={styles.input}
-                placeholder="Tiêu đề ghi chú"
-                value={currentNoteTitle}
-                onChangeText={setCurrentNoteTitle}
-              />
-              <TextInput
-                style={[styles.input, { height: 150 }]}
-                placeholder="Nội dung ghi chú"
-                value={currentNoteContent}
-                onChangeText={setCurrentNoteContent}
-                multiline
-              />
-
-              {/* Nút Lưu */}
-              <TouchableOpacity onPress={handleSaveNote} style={styles.addNoteButton}>
-                <Text style={styles.buttonText}>Lưu Ghi Chú</Text>
+            <TextInput
+              style={styles.modalInput}
+              placeholder="Tiêu đề ghi chú"
+              value={currentNoteTitle}
+              onChangeText={setCurrentNoteTitle}
+            />
+            <TextInput
+              style={styles.modalInput}
+              placeholder="Nội dung ghi chú"
+              value={currentNoteContent}
+              onChangeText={setCurrentNoteContent}
+            />
+            <View style={styles.modalActions}>
+              <TouchableOpacity
+                onPress={handleSaveNote}
+                style={styles.saveButton}
+              >
+                <Text style={styles.buttonText}>Lưu</Text>
               </TouchableOpacity>
-
-              {/* Nút Xóa */}
-              {currentNoteId && (
-                <TouchableOpacity 
-                  onPress={() => handleDeleteNote(currentNoteId)} 
-                  style={styles.deleteButton}
-                >
-                  <Text style={styles.buttonText}>Xóa Ghi Chú</Text>
-                </TouchableOpacity>
-              )}
-            </ScrollView>
+              <TouchableOpacity
+                onPress={() => setModalVisible(false)}
+                style={styles.cancelButton}
+              >
+                <Text style={styles.buttonText}>Hủy</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
-
-      <Button title="Tìm kiếm" onPress={handleSearch} />
-
-      {/* Lọc thời khoá biểu */}
-      <FlatList
-        data={filteredData}
-        keyExtractor={(item) => item[0].toString()}
-        renderItem={({ item }) => {
-          const id = item[0]; 
-          const note = notes.find(n => n.ma_tkb === id); 
-          const roomname = getRoomName(item[3]);
-        
-          return (
-            <View style={styles.item}>
-              <Text style={styles.text}>Thứ: {item[4]}</Text>
-              <Text style={styles.text}>Giờ: {item[6]} - {item[7]}</Text>
-              <Text style={styles.text}>Mã lớp: {item[1]}</Text>
-              <Text style={styles.text}>Mã môn: {item[2]}</Text>
-              <Text style={styles.text}>Phòng: {roomname}</Text>
-
-              <View style={{ flexDirection: "row" }}>
-                <TouchableOpacity onPress={() => handleAddOrEditNote(id)} style={styles.addNoteButton}>
-                  <Text style={styles.buttonText}>Thêm Ghi Chú</Text>
-                </TouchableOpacity>
-              </View>
-
-              {/* Hiện ghi chú */}
-              <Text style={styles.noteText}>{note ? note.content : "Chưa có ghi chú"}</Text>
-            </View>
-          );
-        }}
-      />
     </View>
   );
 }
@@ -191,84 +250,70 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f7f9fc",
+    backgroundColor: "#fff",
   },
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    textAlign: "center",
-    color: "#2c3e50",
   },
   input: {
-    height: 50,
-    borderColor: "#ccc",
     borderWidth: 1,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: "#fff",
-  },
-  dropdownButton: {
-    backgroundColor: "#3498db",
-    paddingVertical: 15,
-    borderRadius: 5,
-    marginBottom: 20,
-  },
-  dropdownText: {
-    color: "white",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
-  },
-  modalContainer: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    width: "80%",
-    maxHeight: 400,
-  },
-  scrollView: {
-    maxHeight: 300,
-  },
-  item: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    backgroundColor: "#fff",
+    padding: 10,
     marginBottom: 10,
     borderRadius: 5,
   },
-  text: {
-    fontSize: 16,
-    color: "#34495e",
+  item: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
   },
   addNoteButton: {
-    backgroundColor: "#4CAF50",
-    padding: 10,
+    backgroundColor: "#5cb85c",
+    padding: 8,
+    marginRight: 10,
     borderRadius: 5,
-    marginTop: 10,
-    alignItems: "center",
   },
   deleteButton: {
-    backgroundColor: "#e74c3c",
+    backgroundColor: "#d9534f",
+    padding: 8,
+    borderRadius: 5,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    width: "80%",
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalInput: {
+    borderWidth: 1,
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+  },
+  modalActions: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  saveButton: {
+    backgroundColor: "#5cb85c",
     padding: 10,
     borderRadius: 5,
-    marginTop: 10,
-    alignItems: "center",
+  },
+  cancelButton: {
+    backgroundColor: "#d9534f",
+    padding: 10,
+    borderRadius: 5,
   },
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
-  },
-  noteText: {
-    marginTop: 10,
-    fontStyle: "italic",
-    color: "#7f8c8d",
+    textAlign: "center",
   },
 });
