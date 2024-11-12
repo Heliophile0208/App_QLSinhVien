@@ -1,21 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { useRoute, useNavigation } from "@react-navigation/native"; 
-import database from "../../data/Appdata"; 
+import { useNavigation } from "@react-navigation/native";
+import database from "../../data/Appdata";
+import { useStudent } from "../StudentContext"; // Import useStudent
 
 export default function StudentListScreen() {
-  const route = useRoute(); 
-  const navigation = useNavigation(); 
-
-  const { maSinhVien } = route.params || {}; 
-
-  console.log(route.params);
-  console.log(maSinhVien); 
+  const navigation = useNavigation();
+  const { maSinhVien } = useStudent(); // Lấy maSinhVien từ StudentContext
 
   const student = database.quanlysinhvien.sinh_vien.data.find(
-    (student) => student[0] === maSinhVien 
+    (student) => student[0] === maSinhVien
   );
-
 
   const maLop = student ? student[7] : null;
 
@@ -27,8 +22,8 @@ export default function StudentListScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         {/* Quay về Login Screen */}
-        <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
-          <Image style={styles.backButton} source={require('../../data/images/back.png')} />
+        <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
+          <Image style={styles.backButton} source={require("../../data/images/back.png")} />
         </TouchableOpacity>
       </View>
 
@@ -39,11 +34,11 @@ export default function StudentListScreen() {
           <TouchableOpacity 
             key={index} 
             style={styles.studentItem}
-            onPress={() => navigation.navigate('sinhvien', { student })} 
+            onPress={() => navigation.navigate("sinhvien", { student })} 
           >
             <View>
               <Text style={styles.studentText}>
-                {student[1]} - {student[6]} {/*  */}
+                {student[1]} - {student[6]}
               </Text>
             </View>
           </TouchableOpacity>
