@@ -1,20 +1,21 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { useRoute } from "@react-navigation/native";
-import database from "../../data/Appdata"; // Giả sử bạn đã import cơ sở dữ liệu
+import { useNavigation } from "@react-navigation/native";
+import database from "../../data/Appdata";
+import { useStudent } from "../StudentContext"; // Import useStudent để lấy maSinhVien từ context
 
 export default function ThongTinTaiKhoan() {
-    const route = useRoute();
-    const { maSinhVien } = route.params; // Lấy mã sinh viên từ params
+    const navigation = useNavigation();
+    const { maSinhVien } = useStudent(); // Lấy maSinhVien từ StudentContext
 
     // Tìm thông tin sinh viên
     const student = database.quanlysinhvien.sinh_vien.data.find(
-        (student) => student[0] === maSinhVien[0] // Tìm sinh viên theo mã sinh viên
+        (student) => student[0] === maSinhVien
     );
 
     // Lọc điểm của sinh viên từ bảng diem
     const studentScores = database.diem.data.filter(
-        (score) => score[1] === maSinhVien[0] // Lọc các điểm có mã sinh viên tương ứng
+        (score) => score[1] === maSinhVien
     );
 
     return (
@@ -73,7 +74,7 @@ export default function ThongTinTaiKhoan() {
             </View>
 
             {/* Optional: Thêm nút quay lại trang chính */}
-            <TouchableOpacity style={styles.backButton} onPress={() => route.params.navigation.goBack()}>
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
                 <Text style={styles.backButtonText}>Quay lại</Text>
             </TouchableOpacity>
         </ScrollView>
