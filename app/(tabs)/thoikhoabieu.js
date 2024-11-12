@@ -37,33 +37,78 @@ export default function Thoikhoabieu() {
       const soTuan = monHoc[6];
       const soBuoi = monHoc[5];
       let currentDay = 2; // Bắt đầu từ thứ 2
-      let startTime = "08:00"; // Khởi điểm giờ học
+      let startTime = "07:00"; // Khởi điểm giờ học sáng
+      let isMorning = true;
 
       for (let i = 0; i < soBuoi; i++) {
         if (currentDay > 6) {
           currentDay = 2;
-          startTime = "08:00"; // Reset giờ học cho tuần mới
+          startTime = "07:00"; // Reset giờ học sáng cho tuần mới
+          isMorning = true;
         }
 
-        const endTime = calculateEndTime(startTime, 2); // 2 giờ học
-        timetableData.push({
-          ma_tkb: entry[0],
-          ma_lop: maLop,
-          ma_mon_hoc: maMonHoc,
-          ma_phong: maPhong,
-          thu: `Thứ ${currentDay}`,
-          tuan: Math.floor(i / 3) + 1,
-          gio_bat_dau: startTime,
-          gio_ket_thuc: endTime,
-          nam_hoc: namHoc,
-        });
+        // Điều chỉnh giờ ra chơi và thời gian kết thúc tùy theo buổi
+        let sessionDuration = 1.5; // 1.5 giờ cho mỗi tiết
+        let breakTime = "08:30";
+        let endMorning = "10:30";
+        let startAfternoon = "13:00";
+        let endAfternoon = "16:30";
+        
+        if (isMorning) {
+          const endTime = calculateEndTime(startTime, sessionDuration); // Buổi sáng học từ 7h đến 10h30
+          timetableData.push({
+            ma_tkb: entry[0],
+            ma_lop: maLop,
+            ma_mon_hoc: maMonHoc,
+            ma_phong: maPhong,
+            thu: `Thứ ${currentDay}`,
+            tuan: Math.floor(i / 3) + 1,
+            gio_bat_dau: startTime,
+            gio_ket_thuc: endTime,
+            nam_hoc: namHoc,
+          });
 
-        // Cập nhật thời gian bắt đầu cho buổi tiếp theo trong ngày
-        startTime = calculateEndTime(startTime, 3); // Giờ kế tiếp bắt đầu sau 3 tiếng
+          // Cập nhật thời gian bắt đầu cho tiết tiếp theo
+          startTime = calculateEndTime(startTime, 2); // Giờ kế tiếp sau 2 tiếng
 
-        if (startTime >= "17:00") { // Nếu hết giờ học trong ngày, chuyển sang ngày tiếp theo
-          currentDay++;
-          startTime = "08:00";
+          // Nếu tới giờ ra chơi, điều chỉnh lại giờ học tiếp theo
+          if (startTime >= breakTime) {
+            startTime = calculateEndTime(breakTime, 0.5); // Nghỉ 30 phút
+          }
+
+          // Chuyển sang buổi chiều nếu đã qua 10h30
+          if (startTime >= endMorning) {
+            isMorning = false;
+            startTime = startAfternoon;
+          }
+        } else {
+          const endTime = calculateEndTime(startTime, sessionDuration); // Buổi chiều học từ 13h đến 16h30
+          timetableData.push({
+            ma_tkb: entry[0],
+            ma_lop: maLop,
+            ma_mon_hoc: maMonHoc,
+            ma_phong: maPhong,
+            thu: `Thứ ${currentDay}`,
+            tuan: Math.floor(i / 3) + 1,
+            gio_bat_dau: startTime,
+            gio_ket_thuc: endTime,
+            nam_hoc: namHoc,
+          });
+
+          // Cập nhật thời gian bắt đầu cho tiết tiếp theo
+          startTime = calculateEndTime(startTime, 2); // Giờ kế tiếp sau 2 tiếng
+
+          // Nếu tới giờ ra chơi, điều chỉnh lại giờ học tiếp theo
+          if (startTime >= "14:30") {
+            startTime = calculateEndTime("14:30", 0.5); // Nghỉ 30 phút
+          }
+
+          // Chuyển sang ngày tiếp theo nếu đã qua 16h30
+          if (startTime >= endAfternoon) {
+            currentDay++;
+            startTime = "07:00";
+            isMorning = true;
+          }
         }
       }
     });
@@ -72,7 +117,6 @@ export default function Thoikhoabieu() {
   }
 
   const thoiKhoaBieu = generateTimetable(); // Tạo lịch trình
-
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedWeek, setSelectedWeek] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
