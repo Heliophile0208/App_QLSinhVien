@@ -46,7 +46,7 @@
 
 - Sửa file app.json:
  "scheme": "myapp" -> **"scheme": "your-app-scheme"**
-- Dán **app** và **data** vào folder dự án của bạn
+- Dán **app**, **context** và **data** vào folder dự án của bạn
   
 ## Clone dự án
 ```bash
