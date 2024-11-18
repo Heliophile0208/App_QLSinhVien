@@ -40,10 +40,12 @@ export default function Thoikhoabieu() {
     }
 
     const filteredTKB = thoi_khoa_bieu.data.filter(entry => {
-      const [_, ma_lop, __, ___, nam_hoc] = entry;
-      return ma_lop === selectedClass && 
-             (!selectedYear || nam_hoc === selectedYear) && 
-             (!selectedWeek || (entry[5] <= selectedWeek && entry[6] >= selectedWeek));
+      const [_, ma_lop, __, ___, nam_hoc, tuan_bat_dau, tuan_ket_thuc] = entry;
+      return (
+        ma_lop === selectedClass &&
+        (!selectedYear || nam_hoc === selectedYear) &&
+        (!selectedWeek || (tuan_bat_dau <= selectedWeek && tuan_ket_thuc >= selectedWeek))
+      );
     });
 
     if (filteredTKB.length === 0) {
@@ -51,49 +53,42 @@ export default function Thoikhoabieu() {
       return [];
     }
 
-    // Tạo một object để lưu trữ các ca học đã xếp theo từng ngày
-    const Lichdaxep = {};
+    const scheduled = {};
 
     for (let entry of filteredTKB) {
-      const [ma_tkb, ma_lop, ma_mon_hoc, ma_phong, nam_hoc, tuan_bat_dau, tuan_ket_thuc] = entry;
+      const [ma_tkb, ma_lop, ma_mon_hoc, ma_phong, nam_hoc] = entry;
       const subjectInfo = mon_hoc.data.find(m => m[0] === ma_mon_hoc);
       const room = phong_hoc.data.find(p => p[0] === ma_phong);
 
       if (subjectInfo && room) {
-        const day = Math.floor(Math.random() * 5) + 2; // Ngày ngẫu nhiên từ Thứ 2 đến Thứ 6
+        const day = Math.floor(Math.random() * 5) + 2;
 
-        // Kiểm tra xem đã có môn học nào ở ca này chưa. Nếu có, chọn ca khác
-        let Lichtrong = timeSlots.find((timeSlot) => {
-          // Kiểm tra xem ca học này đã được xếp trong ngày chưa
-          const Trunglich = Lichdaxep[day] && Lichdaxep[day].includes(timeSlot.slot);
-          return !Trunglich;  // Chỉ chọn ca chưa bị chiếm
+        let availableSlot = timeSlots.find(slot => {
+          const isOccupied = scheduled[day]?.includes(slot.slot);
+          return !isOccupied;
         });
 
-        if (!Lichtrong) {
-          // Nếu không còn ca trống, tìm ca khác trong ngày
-          Lichtrong = timeSlots[Math.floor(Math.random() * timeSlots.length)];
+        if (!availableSlot) {
+          availableSlot = timeSlots[Math.floor(Math.random() * timeSlots.length)];
         }
 
-        // Lưu ca học vào object để tránh trùng
-        if (!Lichdaxep[day]) {
-          Lichdaxep[day] = [];
+        if (!scheduled[day]) {
+          scheduled[day] = [];
         }
-        Lichdaxep[day].push(Lichtrong.slot);
+        scheduled[day].push(availableSlot.slot);
 
         timetableData.push({
           ma_tkb,
           ma_lop,
           ten_lop: selectedClass,
-          ma_khoa: subjectInfo[3],
           ten_mon: subjectInfo[1],
-          ma_phong: room[0],
           ten_phong: room[1],
           nam_hoc,
           week: selectedWeek,
           day,
-          slot: Lichtrong.slot,
-          start: Lichtrong.start,
-          end: Lichtrong.end,
+          slot: availableSlot.slot,
+          start: availableSlot.start,
+          end: availableSlot.end,
         });
       }
     }
@@ -109,12 +104,12 @@ export default function Thoikhoabieu() {
 
     const previousData = getPreviousResults();
     if (previousData.length > 0) {
-      setFilteredData(previousData); 
+      setFilteredData(previousData);
     } else {
       const results = generateTimetable();
       if (results.length > 0) {
-        setFilteredData(results );
-        setPreviousResults(prev => [...prev, { week: selectedWeek, data: results }]); 
+        setFilteredData(results);
+        setPreviousResults(prev => [...prev, { week: selectedWeek, data: results }]);
       }
     }
   };
@@ -124,13 +119,16 @@ export default function Thoikhoabieu() {
     return result ? result.data : [];
   };
 
-  const groupedData = (filteredData.length > 0 ? filteredData : getPreviousResults()).reduce((acc, item) => {
-    if (!acc[item.day]) {
-      acc[item.day] = [];
-    }
-    acc[item.day].push(item);
-    return acc;
-  }, {});
+  const groupedData = (filteredData.length > 0 ? filteredData : getPreviousResults()).reduce(
+    (acc, item) => {
+      if (!acc[item.day]) {
+        acc[item.day] = [];
+      }
+      acc[item.day].push(item);
+      return acc;
+    },
+    {}
+  );
 
   return (
     <View style={styles.container}>
