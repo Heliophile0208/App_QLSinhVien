@@ -12,11 +12,11 @@ import {
 import database from "../../data/Appdata";
 
 export default function Thoikhoabieu() {
-  const timeSlots = [
+ const timeSlots = [
     { slot: 1, start: "07:00", end: "08:30" },
-    { slot: 2, start: "08:45", end: "10:15" },
+    { slot: 2, start: "09:00", end: "10:30" },
     { slot: 3, start: "13:00", end: "14:30" },
-    { slot: 4, start: "14:45", end: "16:15" },
+    { slot: 4, start: "15:00", end: "16:30" },
   ];
 
   const daysOfWeek = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
