@@ -7,7 +7,7 @@
 - **Đăng nhập, đăng kí, đổi mật khẩu, tạo tài khoản**: Cung cấp các chức năng cơ bản cho trang đăng nhập.
 - **Hiển thị danh sách sinh viên**: Liệt kê tất cả sinh viên cùng lớp với sinh viên đang đăng nhập.
 - **Hiển thị thông tin sinh viên**: Xem chi tiết thông tin của sinh viên đang đăng nhập, bao gồm thông tin cơ bản và điểm số.
-- **Xem thời khoá biểu**: Hiển thị thời khoá biểu của sinh viên, với khả năng lọc và thêm ghi chú cho các buổi học sau.
+- **Xem thời khoá biểu**: Hiển thị thời khoá biểu của sinh viên, với khả năng lọc các buổi học.
 
 ## Cài đặt
 
