@@ -19,10 +19,12 @@
 + npm install expo
 + npm install -g expo-cli
 + npm install @react-navigation/native
-+ npm install react-native-screens react-native-safe-area-context
++ npm install react-native-screens
++ npm install react-native-safe-area-context
 + npm install @react-navigation/stack
 + npm install expo-router
-+ npm install react-native-gesture-handler react-native-reanimated
++ npm install react-native-gesture-handler
++ npm install react-native-reanimated
 + npx expo install react-native-screens
 + npx expo install expo-linking
 + npx expo install expo-constants
@@ -38,7 +40,7 @@
 
 #### Bước 3: Tạo Folder dự án
 + Mở hộp thoại Terminal ( Windows + R -> Nhập CMD ) hoặc PowerShell ( Windows + X -> Tìm PowerShell )
-+ Tạo dự án trong ổ đĩa cần lưu: expo init my-new-project
++ Tạo dự án trong ổ đĩa cần lưu: npx create-expo-app@latest ProjectName
 + Điều hướng đến folder vừa tạo: cd my-new-project
 + Chạy dự án trên máy ảo: npx expo start
 
