@@ -1,50 +1,53 @@
-# Welcome to your Expo app 👋
+# App Quản Lý Sinh Viên ( Đang Phát Triển )
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Ứng dụng **Quản Lý Sinh Viên** (App_QLSinhVien) là một công cụ đơn giản giúp quản lý thông tin sinh viên trong một hệ thống.
 
-## Get started
+## Tính năng
 
-1. Install dependencies
+- **Đăng nhập, đăng kí, đổi mật khẩu, tạo tài khoản**: Cung cấp các chức năng cơ bản cho trang đăng nhập.
+- **Hiển thị danh sách sinh viên**: Liệt kê tất cả sinh viên cùng lớp với sinh viên đang đăng nhập.
+- **Hiển thị thông tin sinh viên**: Xem chi tiết thông tin của sinh viên đang đăng nhập, bao gồm thông tin cơ bản và điểm số.
+- **Xem thời khoá biểu**: Hiển thị thời khoá biểu của sinh viên, với khả năng lọc và thêm ghi chú cho các buổi học sau.
 
-   ```bash
-   npm install
-   ```
+## Cài đặt
 
-2. Start the app
+#### Bước 1: Cài đặt môi trường phát triển
+ Các phần mềm cần thiết trong quá trình phát triển
+- **Node.js**, **Android Studio** và **Visual Studio Code**
 
-   ```bash
-    npx expo start
-   ```
+ Thư viện cần thiết cho Expo Router
++ npm install expo
++ npm install -g expo-cli
++ npm install @react-navigation/native
++ npm install react-native-screens react-native-safe-area-context
++ npm install @react-navigation/stack
++ npm install expo-router
++ npm install react-native-gesture-handler react-native-reanimated
++ npx expo install react-native-screens
++ npx expo install expo-linking
++ npx expo install expo-constants
++ npx expo install expo-status-bar
++ npx expo install react-native-gesture-handler
 
-In the output, you'll find options to open the app in a
+#### Bước 2: Cài đặt các Extension trong Visual Studio Code
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **ES7 + React/Redux/React-Native snippets**
+- **React Native Tools**
+- **Babel JavaScript**
+- Các extension khác hỗ trợ phát triển...
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+#### Bước 3: Tạo Folder dự án
++ Mở hộp thoại Terminal ( Windows + R -> Nhập CMD ) hoặc PowerShell ( Windows + X -> Tìm PowerShell )
++ Tạo dự án trong ổ đĩa cần lưu: expo init my-new-project
++ Điều hướng đến folder vừa tạo: cd my-new-project
++ Chạy dự án trên máy ảo: npx expo start
 
-## Get a fresh project
+#### Bước 4: Mở và chạy dự án sinh viên
 
-When you're ready, run:
-
+- Sửa file app.json:
+ "scheme": "myapp" -> **"scheme": "your-app-scheme"**
+- Dán **app**, **context** và **data** vào folder dự án của bạn
+  
+## Clone dự án
 ```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+git clone https://github.com/Heliophile0208/App_QLSinhVien.git
